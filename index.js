@@ -1,43 +1,55 @@
-const userContainer = document.getElementById('cont');
-const addTask = () => {
-  return fetch('https://dummyjson.com/todos?limit=12')
-    .then(response => response.json())
-    .then(response => response.todos)
-    .catch(error => error);
+let tasksHolder = document.getElementById('fulltask');
+
+const getTasks = async () => {
+  try {
+    const response = await fetch('https://dummyjson.com/todos');
+    if (!response.ok) {
+      throw new Error('failed to find tasks');
+    }
+    const taskData = await response.json();
+    return taskData.todos;
+  } catch (error) {
+    console.log('Error during fetching:', error);
+  }
 };
-const display = async () => {
-  const tasks = await addTask();
+
+const displayTasks = async () => {
+  const tasks = await getTasks();
   console.log(tasks);
-  }
+  if (Array.isArray(tasks)) {
+    tasks.forEach(item => {
+      let li = document.createElement('li');
+      let checkbox = document.createElement('input');
+      let label = document.createElement('label');
+      let deleteTask = document.createElement('del');
 
-display();
+      li.style.display = 'flex';
+      li.style.alignItems = 'center';
 
-addForm.addEventListener('submit', event => {
-  event.preventDefault();
-  const taskInput = document.getElementById('taskInput');
-  const newTask = taskInput.value;
+      checkbox.type = 'checkbox';
+      checkbox.checked = item.completed;
+      label.textContent = item.todo;
+      deleteTask.textContent = 'Delete';
+      deleteTask.classList.add('deleteButton');
 
-  if (newTask) {
-    const div = document.createElement('div');
-    const ids = document.createElement('span');
-    const name = document.createElement('input');
-    const checkbox = document.createElement('input');
+      deleteTask.addEventListener('click', () => {
+        li.remove();
+      });
 
-    checkbox.type = 'checkbox';
-    name.value = newTask;
-    checkbox.addEventListener('change', () => {
-      if (checkbox.checked) {
-        name.style.textDecoration = 'line-through';
-      } else {
-        userName.style.textDecoration = 'none';
-      }
+      li.appendChild(checkbox);
+      li.appendChild(label);
+      li.appendChild(deleteTask);
+      tasksHolder.appendChild(li);
     });
-
-    div.appendChild(checkbox);
-    div.appendChild(name);
-    div.appendChild(ids);
-    div.setAttribute('key', Date.now());
-    div.setAttribute('class', 'people');
-    userContainer.prepend(div);
   }
-});
+};
+
+const clearTasks = () => {
+  const done = tasksHolder.querySelectorAll('li');
+  done.forEach(task => {
+    const checks = task.querySelector('input[type="checkbox"]');
+    if (checks.checked) {
+      task.remove();
+    }
+  });
+};

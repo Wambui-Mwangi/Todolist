@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
-  <div class="head">
-    <h1>To Do List</h1>
-    <h3><b>Task List</b></h3>
+  <div id="fulltask">
+    <h1>To-Do List</h1>
+    <input type="text" id="newTask" placeholder="Enter new task">
+    <button id="addButton">Add</button>
+    <ul id="allTasks">
+
+    </ul>
+    <button id="clear">Delete done tasks</button>
   </div>
-    <div id="cont">
-      <form id="addForm">
-    <input type="text" id="taskInput" placeholder="Enter a task" required>
-    <button type="submit">Add Task</button>
-  </form>
-    </div>
 
 <script src="index.js"></script>
 </body>
